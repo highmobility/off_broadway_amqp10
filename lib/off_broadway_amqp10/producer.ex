@@ -145,6 +145,19 @@ defmodule OffBroadwayAmqp10.Producer do
     {:noreply, [], new_state}
   end
 
+  def handle_info(
+        {:amqp10_event,
+         {:link, {:link_ref, :receiver, _, _},
+          {:detached, {:"v1_0.error", {:symbol, error_title}, {:utf8, error_message}, _}}}},
+        state
+      ) do
+    Logger.error(
+      "off_broadway_amqp10 session detached with error [#{error_title}], message: [#{error_message}]"
+    )
+
+    {:stop, error_title, state}
+  end
+
   def handle_info(:maybe_ask_credits, state) do
     if State.has_demand?(state) && State.receiver_attached?(state) do
       credits = State.credits_within_limits(state)

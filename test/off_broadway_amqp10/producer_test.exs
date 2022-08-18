@@ -168,6 +168,25 @@ defmodule OffBroadwayAmqp10.ProducerTest do
     end
   end
 
+  describe "amqp10 event: receiver detached" do
+    test "set the receiver status", %{state: state} do
+      msg =
+        {:amqp10_event,
+         {:link, {:link_ref, :receiver, self(), 0},
+          {:detached,
+           {:"v1_0.error", {:symbol, "amqp:internal-error"},
+            {:utf8,
+             "The service was unable to process the request; please retry the operation. For more information on exception types and proper exception handling, please refer to http://go.microsoft.com/fwlink/?LinkId=761101 TrackingId:abcdef1234443_G8, SystemTracker:gateway5, Timestamp:2022-08-12T17:54:41"},
+            :undefined}}}}
+
+      assert {:stop, "amqp:internal-error", new_state} =
+               SUT.handle_info(
+                 msg,
+                 state
+               )
+    end
+  end
+
   describe "amqp10 event: credit exhausted" do
     test "invoke maybe ask credits", %{state: state} do
       assert {:noreply, [], new_state} =
