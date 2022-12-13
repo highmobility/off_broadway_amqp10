@@ -1,6 +1,8 @@
 defmodule OffBroadwayAmqp10.ProducerTest do
   use ExUnit.Case, async: true
 
+  import ExUnit.CaptureLog
+
   alias OffBroadwayAmqp10.Producer.State
   alias OffBroadwayAmqp10.Amqp10
   alias OffBroadwayAmqp10.Producer, as: SUT
@@ -184,6 +186,25 @@ defmodule OffBroadwayAmqp10.ProducerTest do
                  msg,
                  state
                )
+    end
+  end
+
+  describe "amqp10 event: receives connection closed by force" do
+    test "set the receiver status", %{state: state} do
+      msg =
+        {:amqp10_event,
+         {:connection, self(),
+          {:closed,
+           {:forced,
+            "The connection was inactive for more than the allowed 300000 milliseconds and is closed by container 'LinkTracker'. TrackingId:abc, SystemTracker:gateway5, Timestamp:2022-12-13T01:04:38"}}}}
+
+      assert capture_log(fn ->
+               assert {:stop, :connection_closed_forcfully, _new_state} =
+                        SUT.handle_info(
+                          msg,
+                          state
+                        )
+             end) =~ "The connection was inactive"
     end
   end
 

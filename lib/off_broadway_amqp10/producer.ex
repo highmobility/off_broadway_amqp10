@@ -105,6 +105,15 @@ defmodule OffBroadwayAmqp10.Producer do
     {:noreply, [], new_state}
   end
 
+  def handle_info(
+        {:amqp10_event, {:connection, _, {:closed, {:forced, error_message}}}},
+        state
+      ) do
+    Logger.error("off_broadway_amqp10 connection closed forcfully, message: [#{error_message}]")
+
+    {:stop, :connection_closed_forcfully, state}
+  end
+
   def handle_info(:begin_session, state) do
     log_command("begin session")
 
