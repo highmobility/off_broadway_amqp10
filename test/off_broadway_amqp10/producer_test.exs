@@ -199,7 +199,7 @@ defmodule OffBroadwayAmqp10.ProducerTest do
             "The connection was inactive for more than the allowed 300000 milliseconds and is closed by container 'LinkTracker'. TrackingId:abc, SystemTracker:gateway5, Timestamp:2022-12-13T01:04:38"}}}}
 
       assert capture_log(fn ->
-               assert {:stop, :connection_closed_forcfully, _new_state} =
+               assert {:stop, :connection_closed_forcefully, _new_state} =
                         SUT.handle_info(
                           msg,
                           state
