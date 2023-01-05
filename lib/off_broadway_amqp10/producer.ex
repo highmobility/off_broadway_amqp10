@@ -109,9 +109,9 @@ defmodule OffBroadwayAmqp10.Producer do
         {:amqp10_event, {:connection, _, {:closed, {:forced, error_message}}}},
         state
       ) do
-    Logger.error("off_broadway_amqp10 connection closed forcfully, message: [#{error_message}]")
+    Logger.error("off_broadway_amqp10 connection closed forcefully, message: [#{error_message}]")
 
-    {:stop, :connection_closed_forcfully, state}
+    {:stop, :connection_closed_forcefully, state}
   end
 
   def handle_info(:begin_session, state) do
