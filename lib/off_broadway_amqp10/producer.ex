@@ -105,6 +105,17 @@ defmodule OffBroadwayAmqp10.Producer do
     {:noreply, [], new_state}
   end
 
+  @impl GenStage
+  def handle_info(
+        {:amqp10_event, {:connection, _, {:closed, {:forced, error_message}}}},
+        state
+      ) do
+    Logger.error("off_broadway_amqp10 connection closed forcefully, message: [#{error_message}]")
+
+    {:stop, :connection_closed_forcefully, state}
+  end
+
+  @impl GenStage
   def handle_info(:begin_session, state) do
     log_command("begin session")
 
@@ -115,6 +126,7 @@ defmodule OffBroadwayAmqp10.Producer do
     {:noreply, [], new_state}
   end
 
+  @impl GenStage
   def handle_info({:amqp10_event, {:session, _, :begun}}, state) do
     log_event("session begun")
 
@@ -125,6 +137,7 @@ defmodule OffBroadwayAmqp10.Producer do
     {:noreply, [], new_state}
   end
 
+  @impl GenStage
   def handle_info(:attach_receiver, state) do
     log_command("attach")
 
@@ -135,6 +148,7 @@ defmodule OffBroadwayAmqp10.Producer do
     {:noreply, [], new_state}
   end
 
+  @impl GenStage
   def handle_info({:amqp10_event, {:link, {:link_ref, :receiver, _, _}, :attached}}, state) do
     log_event("attached")
 
@@ -145,6 +159,7 @@ defmodule OffBroadwayAmqp10.Producer do
     {:noreply, [], new_state}
   end
 
+  @impl GenStage
   def handle_info(
         {:amqp10_event,
          {:link, {:link_ref, :receiver, _, _},
@@ -158,6 +173,7 @@ defmodule OffBroadwayAmqp10.Producer do
     {:stop, error_title, state}
   end
 
+  @impl GenStage
   def handle_info(:maybe_ask_credits, state) do
     if State.has_demand?(state) && State.receiver_attached?(state) do
       credits = State.credits_within_limits(state)
@@ -169,6 +185,7 @@ defmodule OffBroadwayAmqp10.Producer do
     {:noreply, [], state}
   end
 
+  @impl GenStage
   def handle_info(
         {:amqp10_event, {:link, {:link_ref, :receiver, _, _}, :credit_exhausted}},
         state
@@ -180,6 +197,7 @@ defmodule OffBroadwayAmqp10.Producer do
     {:noreply, [], state}
   end
 
+  @impl GenStage
   def handle_info({:amqp10_msg, {:link_ref, :receiver, _, _}, msg}, state) do
     client_module = state.amqp.client_module
     payload = client_module.body(msg)
