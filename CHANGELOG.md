@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.1 (2023-01-25)
+## 0.1.2 (2023-01-25)
 
 * Handle amqp10_event when connection closed forcefully
 
