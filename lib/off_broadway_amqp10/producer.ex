@@ -20,14 +20,14 @@ defmodule OffBroadwayAmqp10.Producer do
             {OffBroadwayAmqp10.Producer,
             queue: "my_queue",
             connection: [
-              host: "my-service.servicebus.windows.net"
+              host: "my-service.servicebus.windows.net",
               sasl: [mechanism: :plain, username: "foo", password: "bar"],
               tls_opts: [],
               transfer_limit_margin: 100
             ],
             session: [
               name: to_string(node())
-            ]
+            ]},
           concurrency: 1
         ],
         processors: [
@@ -45,7 +45,7 @@ defmodule OffBroadwayAmqp10.Producer do
       message = %Broadway.Message{
         data: "raw message body",
         metadata: %{
-          headers: %{delivery_count: 0, durable: false, ... }
+          headers: %{delivery_count: 0, durable: false, ... },
           properties: %{creation_time: 1_656_945_422_583, ...},
           application_properties: %{"foo" => "bar", ...},
           annotations: %{"x-opt-sequence-number" => 6068, .. }
