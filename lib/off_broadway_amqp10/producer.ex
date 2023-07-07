@@ -20,7 +20,7 @@ defmodule OffBroadwayAmqp10.Producer do
             {OffBroadwayAmqp10.Producer,
             queue: "my_queue",
             connection: [
-              host: "my-service.servicebus.windows.net",
+              hostname: "my-service.servicebus.windows.net",
               sasl: [mechanism: :plain, username: "foo", password: "bar"],
               tls_opts: [],
               transfer_limit_margin: 100
