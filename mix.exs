@@ -31,7 +31,7 @@ defmodule OffBroadwayAmqp10.MixProject do
     [
       {:broadway, "~> 1.0"},
       {:amqp10_client, "~> 3.10"},
-      {:nimble_options, "~> 1.0.2"},
+      {:nimble_options, "~> 1.1.0"},
       {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:ex_doc, ">= 0.19.0", only: :dev}
