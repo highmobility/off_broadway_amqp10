@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.4 (2024-08-15)
+
+* Upgrade dependencies
+* Loose nimble_options version
+
 ## 0.1.3 (2023-07-14)
 
 * Fix typos in the documentation
