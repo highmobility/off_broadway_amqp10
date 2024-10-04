@@ -181,7 +181,7 @@ defmodule OffBroadwayAmqp10.ProducerTest do
              "The service was unable to process the request; please retry the operation. For more information on exception types and proper exception handling, please refer to http://go.microsoft.com/fwlink/?LinkId=761101 TrackingId:abcdef1234443_G8, SystemTracker:gateway5, Timestamp:2022-08-12T17:54:41"},
             :undefined}}}}
 
-      assert {:stop, "amqp:internal-error", new_state} =
+      assert {:stop, "amqp:internal-error", _new_state} =
                SUT.handle_info(
                  msg,
                  state
