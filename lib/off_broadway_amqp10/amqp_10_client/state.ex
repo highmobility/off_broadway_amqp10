@@ -96,14 +96,24 @@ defmodule OffBroadwayAmqp10.Amqp10.State do
       hostname: get_in(opts, [:connection, :hostname]),
       address: String.to_charlist(get_in(opts, [:connection, :hostname])),
       port: get_in(opts, [:connection, :port]),
-      sasl: {
-        get_in(opts, [:connection, :sasl, :mechanism]),
-        get_in(opts, [:connection, :sasl, :username]),
-        get_in(opts, [:connection, :sasl, :password])
-      },
+      sasl: sasl_config(opts),
       tls_opts: get_in(opts, [:connection, :tls_opts]),
       transfer_limit_margin: get_in(opts, [:connection, :transfer_limit_margin])
     }
+  end
+
+  defp sasl_config(opts) do
+    case get_in(opts, [:connection, :sasl]) do
+      :none ->
+        :none
+
+      _ ->
+        {
+          get_in(opts, [:connection, :sasl, :mechanism]),
+          get_in(opts, [:connection, :sasl, :username]),
+          get_in(opts, [:connection, :sasl, :password])
+        }
+    end
   end
 
   defp receiver_config(opts) do

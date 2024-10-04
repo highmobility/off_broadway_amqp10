@@ -26,7 +26,9 @@ defmodule OffBroadwayAmqp10.Producer do
               transfer_limit_margin: 100
             ],
             session: [
-              name: to_string(node())
+              name: to_string(node()),
+              snd_settle_mode: :mixed,
+              rcv_settle_mode: :second
             ]},
           concurrency: 1
         ],
