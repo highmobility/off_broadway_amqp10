@@ -119,7 +119,12 @@ defmodule OffBroadwayAmqp10.Amqp10.State do
   defp receiver_config(opts) do
     %{
       name: get_in(opts, [:session, :name]),
-      role: {:receiver, %{address: get_in(opts, [:queue]), durable: :none}, self()},
+      role:
+        {:receiver,
+         %{
+           address: get_in(opts, [:queue]),
+           durable: get_in(opts, [:durable])
+         }, self()},
       snd_settle_mode: get_in(opts, [:session, :snd_settle_mode]),
       rcv_settle_mode: get_in(opts, [:session, :rcv_settle_mode]),
       filter: %{},

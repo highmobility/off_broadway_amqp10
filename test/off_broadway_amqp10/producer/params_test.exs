@@ -34,4 +34,12 @@ defmodule OffBroadwayAmqp10.Producer.ParamsTest do
 
     assert SUT.validate!(opts)
   end
+
+  test "validates configuration with durable key" do
+    durable = :configuration
+    opts = Keyword.put(@opts, :durable, durable)
+
+    assert result = SUT.validate!(opts)
+    assert {:ok, ^durable} = Keyword.fetch(result, :durable)
+  end
 end

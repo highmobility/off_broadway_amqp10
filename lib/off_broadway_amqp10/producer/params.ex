@@ -76,6 +76,14 @@ defmodule OffBroadwayAmqp10.Producer.Params do
       The name of the queue or topic
       """
     ],
+    durable: [
+      type: {:in, [:none, :configuration, :unsettled_state]},
+      required: false,
+      default: :none,
+      doc: """
+      Receiver durability option based on `t::amqp10_client_session.terminus_durability/0``
+      """
+    ],
     connection: [
       type: :keyword_list,
       keys: @connection_opts_schema,

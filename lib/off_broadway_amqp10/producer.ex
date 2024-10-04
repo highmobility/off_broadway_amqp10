@@ -19,6 +19,7 @@ defmodule OffBroadwayAmqp10.Producer do
           module:
             {OffBroadwayAmqp10.Producer,
             queue: "my_queue",
+            durable: :none,
             connection: [
               hostname: "my-service.servicebus.windows.net",
               sasl: [mechanism: :plain, username: "foo", password: "bar"],
