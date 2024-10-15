@@ -6,6 +6,13 @@ defmodule OffBroadwayAmqp10.Amqp10.Client.Impl do
   alias OffBroadwayAmqp10.Amqp10.State
   alias OffBroadwayAmqp10.Amqp10.Client
 
+  require Record
+
+  Record.defrecord(
+    :amqp10_value,
+    Record.extract(:"v1_0.amqp_value", from: "deps/amqp10_common/include/amqp10_framing.hrl")
+  )
+
   @behaviour Client
 
   @impl Client
@@ -35,8 +42,16 @@ defmodule OffBroadwayAmqp10.Amqp10.Client.Impl do
 
   @impl Client
   def body(raw_msg) do
-    [payload] = :amqp10_msg.body(raw_msg)
-    payload
+    body = :amqp10_msg.body(raw_msg)
+
+    cond do
+      match?([_], body) ->
+        List.first(body)
+
+      Record.is_record(body, :amqp10_value) ->
+        packed_content = amqp10_value(body, :content)
+        :amqp10_client_types.unpack(packed_content)
+    end
   end
 
   @impl Client

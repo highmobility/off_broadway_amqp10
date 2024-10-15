@@ -4,8 +4,12 @@ defmodule OffBroadwayAmqp10.Amqp10.Client.ImplTest do
   alias OffBroadwayAmqp10.Amqp10.Client.Impl, as: SUT
 
   describe "body/1" do
-    test "extracts body" do
+    test "binary list: extracts body" do
       assert SUT.body(Fixture.raw_msg()) == "Itachi"
+    end
+
+    test "v1_0.amqp_value: extracts body" do
+      assert SUT.body(Fixture.raw_msg_amqp10_value()) == "Itachi"
     end
   end
 
