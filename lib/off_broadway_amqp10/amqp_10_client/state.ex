@@ -96,20 +96,31 @@ defmodule OffBroadwayAmqp10.Amqp10.State do
       hostname: get_in(opts, [:connection, :hostname]),
       address: String.to_charlist(get_in(opts, [:connection, :hostname])),
       port: get_in(opts, [:connection, :port]),
-      sasl: {
-        get_in(opts, [:connection, :sasl, :mechanism]),
-        get_in(opts, [:connection, :sasl, :username]),
-        get_in(opts, [:connection, :sasl, :password])
-      },
+      sasl: sasl_config(get_in(opts, [:connection, :sasl])),
       tls_opts: get_in(opts, [:connection, :tls_opts]),
       transfer_limit_margin: get_in(opts, [:connection, :transfer_limit_margin])
+    }
+  end
+
+  defp sasl_config(:none), do: :none
+
+  defp sasl_config(sasl_opts) do
+    {
+      Keyword.get(sasl_opts, :mechanism),
+      Keyword.get(sasl_opts, :username),
+      Keyword.get(sasl_opts, :password)
     }
   end
 
   defp receiver_config(opts) do
     %{
       name: get_in(opts, [:session, :name]),
-      role: {:receiver, %{address: get_in(opts, [:queue]), durable: :none}, self()},
+      role:
+        {:receiver,
+         %{
+           address: get_in(opts, [:queue]),
+           durable: get_in(opts, [:durable])
+         }, self()},
       snd_settle_mode: get_in(opts, [:session, :snd_settle_mode]),
       rcv_settle_mode: get_in(opts, [:session, :rcv_settle_mode]),
       filter: %{},

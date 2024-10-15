@@ -4,24 +4,29 @@ defmodule OffBroadwayAmqp10.Producer.Params do
     hostname: [type: :string, required: true, doc: "The hostname"],
     port: [type: :pos_integer, required: true, doc: "The port number"],
     sasl: [
-      type: :keyword_list,
-      keys: [
-        mechanism: [
-          type: {:in, [:plain]},
-          required: true
-        ],
-        username: [
-          type: :string,
-          required: true
-        ],
-        password: [
-          type: :string,
-          required: true
-        ]
-      ],
+      type:
+        {:or,
+         [
+           {:in, [:none]},
+           {:keyword_list,
+            [
+              mechanism: [
+                type: {:in, [:plain]},
+                required: true
+              ],
+              username: [
+                type: :string,
+                required: true
+              ],
+              password: [
+                type: :string,
+                required: true
+              ]
+            ]}
+         ]},
       required: true,
       doc: """
-      [mechanism: :plain, username: "foo", password: "bar"]. In Azure Service Bus username is `SharedAccessKeyName` and password is `SharedAccessKey`
+      :none or [mechanism: :plain, username: "foo", password: "bar"]. In Azure Service Bus username is `SharedAccessKeyName` and password is `SharedAccessKey`
       """
     ],
     tls_opts: [type: :any, required: false],
@@ -69,6 +74,14 @@ defmodule OffBroadwayAmqp10.Producer.Params do
       required: true,
       doc: """
       The name of the queue or topic
+      """
+    ],
+    durable: [
+      type: {:in, [:none, :configuration, :unsettled_state]},
+      required: false,
+      default: :none,
+      doc: """
+      Receiver durability option based on `t::amqp10_client_session.terminus_durability/0``
       """
     ],
     connection: [
