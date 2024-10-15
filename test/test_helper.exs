@@ -70,7 +70,7 @@ defmodule Fixture do
 
   def raw_msg_amqp10_value do
     value = :amqp10_client_types.utf8("Itachi")
-    record = OffBroadwayAmqp10.Amqp10.Client.Impl.amqp10_value(content: value)
+    record = OffBroadwayAmqp10.Amqp10.Client.Impl.amqp_value(content: value)
     raw_msg(record)
   end
 end

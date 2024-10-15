@@ -3,14 +3,16 @@ defmodule OffBroadwayAmqp10.Amqp10.Client.Impl do
   AMQP Client Wrapper
   """
 
-  alias OffBroadwayAmqp10.Amqp10.State
-  alias OffBroadwayAmqp10.Amqp10.Client
+  alias OffBroadwayAmqp10.Amqp10.{Client, State}
 
   require Record
 
+  @amqp_value_record_tag :"v1_0.amqp_value"
+
   Record.defrecord(
-    :amqp10_value,
-    Record.extract(:"v1_0.amqp_value", from: "deps/amqp10_common/include/amqp10_framing.hrl")
+    :amqp_value,
+    @amqp_value_record_tag,
+    Record.extract(@amqp_value_record_tag, from: "deps/amqp10_common/include/amqp10_framing.hrl")
   )
 
   @behaviour Client
@@ -48,8 +50,8 @@ defmodule OffBroadwayAmqp10.Amqp10.Client.Impl do
       match?([_], body) ->
         List.first(body)
 
-      Record.is_record(body, :amqp10_value) ->
-        packed_content = amqp10_value(body, :content)
+      Record.is_record(body, @amqp_value_record_tag) ->
+        packed_content = amqp_value(body, :content)
         :amqp10_client_types.unpack(packed_content)
     end
   end
