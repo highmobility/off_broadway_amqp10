@@ -12,7 +12,9 @@ defmodule OffBroadwayAmqp10.Amqp10.Client.Impl do
   Record.defrecord(
     :amqp_value,
     @amqp_value_record_tag,
-    Record.extract(@amqp_value_record_tag, from: "deps/amqp10_common/include/amqp10_framing.hrl")
+    Record.extract(@amqp_value_record_tag,
+      from: Path.join(:code.lib_dir(:amqp10_common), "include/amqp10_framing.hrl")
+    )
   )
 
   @behaviour Client
