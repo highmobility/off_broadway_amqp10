@@ -7,14 +7,14 @@ defmodule OffBroadwayAmqp10.Amqp10.Client.Impl do
 
   require Record
 
+  @hrl_path Path.join(:code.lib_dir(:amqp10_common), "include/amqp10_framing.hrl")
+
   @amqp_value_record_tag :"v1_0.amqp_value"
 
   Record.defrecord(
     :amqp_value,
     @amqp_value_record_tag,
-    Record.extract(@amqp_value_record_tag,
-      from: Path.join(:code.lib_dir(:amqp10_common), "include/amqp10_framing.hrl")
-    )
+    Record.extract(@amqp_value_record_tag, from: @hrl_path)
   )
 
   @amqp_sequence_record_tag :"v1_0.amqp_sequence"
@@ -22,9 +22,7 @@ defmodule OffBroadwayAmqp10.Amqp10.Client.Impl do
   Record.defrecord(
     :amqp_sequence,
     @amqp_sequence_record_tag,
-    Record.extract(@amqp_sequence_record_tag,
-      from: Path.join(:code.lib_dir(:amqp10_common), "include/amqp10_framing.hrl")
-    )
+    Record.extract(@amqp_sequence_record_tag, from: @hrl_path)
   )
 
   @behaviour Client
