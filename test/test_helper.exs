@@ -1,6 +1,8 @@
 ExUnit.start()
 
 defmodule Fixture do
+  require OffBroadwayAmqp10.Amqp10.Client.Impl
+
   def configuration(opts \\ []) do
     connection_opts = [
       hostname: "localhost",
@@ -37,8 +39,8 @@ defmodule Fixture do
     OffBroadwayAmqp10.Producer.State.new(configuration(opts))
   end
 
-  def raw_msg do
-    raw_msg = :amqp10_msg.new("delivery_tag", "Itachi")
+  def raw_msg(value \\ "Itachi") do
+    raw_msg = :amqp10_msg.new("delivery_tag", value)
     raw_msg = :amqp10_msg.set_headers(%{:durable => false, priority: 4}, raw_msg)
 
     raw_msg =
@@ -64,6 +66,22 @@ defmodule Fixture do
       },
       raw_msg
     )
+  end
+
+  def raw_msg_amqp10_value do
+    value = :amqp10_client_types.utf8("Itachi")
+    record = OffBroadwayAmqp10.Amqp10.Client.Impl.amqp_value(content: value)
+    raw_msg(record)
+  end
+
+  def raw_msg_amqp10_sequence do
+    values = [
+      :amqp10_client_types.utf8("Itachi"),
+      :amqp10_client_types.utf8("Shisui")
+    ]
+
+    records = [OffBroadwayAmqp10.Amqp10.Client.Impl.amqp_sequence(content: values)]
+    raw_msg(records)
   end
 end
 

@@ -26,3 +26,4 @@ end
 - [ ] Handle connection errors
 - [ ] Handle session errors
 - [ ] Backoff strategy to re-connect in case of an error
+- [ ] Handle body type: `[#'v1_0.amqp_sequence'{}]` specified in this [doc](https://hexdocs.pm/amqp10_client/amqp10_msg.html#body-1) and this [PR](https://github.com/highmobility/off_broadway_amqp10/pull/114).

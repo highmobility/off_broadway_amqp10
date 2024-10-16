@@ -3,8 +3,27 @@ defmodule OffBroadwayAmqp10.Amqp10.Client.Impl do
   AMQP Client Wrapper
   """
 
-  alias OffBroadwayAmqp10.Amqp10.State
-  alias OffBroadwayAmqp10.Amqp10.Client
+  alias OffBroadwayAmqp10.Amqp10.{Client, State}
+
+  require Record
+
+  @hrl_path Path.join(:code.lib_dir(:amqp10_common), "include/amqp10_framing.hrl")
+
+  @amqp_value_record_tag :"v1_0.amqp_value"
+
+  Record.defrecord(
+    :amqp_value,
+    @amqp_value_record_tag,
+    Record.extract(@amqp_value_record_tag, from: @hrl_path)
+  )
+
+  @amqp_sequence_record_tag :"v1_0.amqp_sequence"
+
+  Record.defrecord(
+    :amqp_sequence,
+    @amqp_sequence_record_tag,
+    Record.extract(@amqp_sequence_record_tag, from: @hrl_path)
+  )
 
   @behaviour Client
 
@@ -35,8 +54,19 @@ defmodule OffBroadwayAmqp10.Amqp10.Client.Impl do
 
   @impl Client
   def body(raw_msg) do
-    [payload] = :amqp10_msg.body(raw_msg)
-    payload
+    body = :amqp10_msg.body(raw_msg)
+
+    cond do
+      Record.is_record(body, @amqp_value_record_tag) ->
+        packed_content = amqp_value(body, :content)
+        :amqp10_client_types.unpack(packed_content)
+
+      match?([value] when is_binary(value), body) ->
+        List.first(body)
+
+      is_list(body) && Record.is_record(List.first(body), @amqp_sequence_record_tag) ->
+        raise "Not implemented - AMQP 1.0 Sequence is not implemented - Please create an issue with a sample message if you need it"
+    end
   end
 
   @impl Client
