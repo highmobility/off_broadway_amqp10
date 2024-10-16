@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+
+* Allow SASL to be set to :none and durable to be configured by user (#113)
+* Implement support for body of type #'v1_0.amqp_value'{} (#114)
+
 ## 0.1.4 (2024-08-15)
 
 * Upgrade dependencies
