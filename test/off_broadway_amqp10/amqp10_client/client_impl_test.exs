@@ -11,6 +11,12 @@ defmodule OffBroadwayAmqp10.Amqp10.Client.ImplTest do
     test "v1_0.amqp_value: extracts body" do
       assert SUT.body(Fixture.raw_msg_amqp10_value()) == "Itachi"
     end
+
+    test "v1_0.amqp_sequence list: raises" do
+      assert_raise RuntimeError, ~r/Not implemented - AMQP 1.0 Sequence is not implemented/, fn ->
+        SUT.body(Fixture.raw_msg_amqp10_sequence())
+      end
+    end
   end
 
   describe "headers/1" do

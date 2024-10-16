@@ -73,6 +73,16 @@ defmodule Fixture do
     record = OffBroadwayAmqp10.Amqp10.Client.Impl.amqp_value(content: value)
     raw_msg(record)
   end
+
+  def raw_msg_amqp10_sequence do
+    values = [
+      :amqp10_client_types.utf8("Itachi"),
+      :amqp10_client_types.utf8("Shisui")
+    ]
+
+    records = [OffBroadwayAmqp10.Amqp10.Client.Impl.amqp_sequence(content: values)]
+    raw_msg(records)
+  end
 end
 
 defmodule FakeAmqpClient do
