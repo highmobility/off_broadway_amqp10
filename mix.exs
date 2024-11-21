@@ -30,7 +30,7 @@ defmodule OffBroadwayAmqp10.MixProject do
   defp deps do
     [
       {:broadway, "~> 1.0"},
-      {:amqp10_client, "~> 3.10"},
+      {:amqp10_client, "~> 4.0"},
       {:nimble_options, "~> 1.1"},
       {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
