@@ -4,6 +4,7 @@
 
 ## 0.2.0 (2024-01-06)
 
+* Relax amqp10_client version
 * Allow SASL to be set to :none and durable to be configured by user (#113)
 * Implement support for body of type #'v1_0.amqp_value'{} (#114)
 
