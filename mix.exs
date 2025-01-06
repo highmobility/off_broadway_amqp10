@@ -1,7 +1,7 @@
 defmodule OffBroadwayAmqp10.MixProject do
   use Mix.Project
 
-  @version "0.1.4"
+  @version "0.2.0"
   @description "An AMQP 1.0 connector for Broadway"
   @source_url "https://github.com/highmobility/off_broadway_amqp10"
 
