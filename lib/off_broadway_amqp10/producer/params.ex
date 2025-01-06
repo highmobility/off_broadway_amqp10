@@ -81,7 +81,7 @@ defmodule OffBroadwayAmqp10.Producer.Params do
       required: false,
       default: :none,
       doc: """
-      Receiver durability option based on `t::amqp10_client_session.terminus_durability/0``
+      Receiver durability option based on `t::amqp10_client_session.terminus_durability/0`
       """
     ],
     connection: [
