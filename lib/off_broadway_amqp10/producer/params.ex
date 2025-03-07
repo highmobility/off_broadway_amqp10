@@ -29,7 +29,13 @@ defmodule OffBroadwayAmqp10.Producer.Params do
       :none or [mechanism: :plain, username: "foo", password: "bar"]. In Azure Service Bus username is `SharedAccessKeyName` and password is `SharedAccessKey`
       """
     ],
-    tls_opts: [type: :any, required: false],
+    tls_opts: [
+      type: :any,
+      required: false,
+      doc: """
+      Must be `{:secure_port, [:ssl.tls_option()]}`.
+      """
+    ],
     transfer_limit_margin: [
       type: :pos_integer,
       default: 100,
